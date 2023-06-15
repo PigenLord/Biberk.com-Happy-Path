@@ -1,6 +1,6 @@
 """ Test Script to create policy through Biberk.com in a Happy Path manner
     Author: Joshua Martinez
-    Updated: 6/9/2023
+    Updated: 6/15/2023
 """
 import time
 
