@@ -14,7 +14,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 #Different Variables for policy creation
 Industry = "Flowers Shop"
-businessName = "Automated Selenium Flower Shop"
+businessName = "Automated Pre Sub Flowers Shop"
 yearBusinessStarted = "2015"
 streetAddress = "155 Avenida Cabrillo"
 city = "San Clemente"
@@ -34,16 +34,15 @@ driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())
 driver.get("https://www-qa-portalspa.biberk.com/")
 
 # Clicks on "Get a Quote" btn to begin quote flow
-time.sleep(1)
 getQuotebtn = driver.find_element(By.XPATH, "//button[@class='btn secondary width-med waves-effect with-icon-right']")
 getQuotebtn.click()
-assert getQuotebtn == "Get a Quote"
+
 
 # Here we select the & click the industry we will test
 industryClick = driver.find_element(By.XPATH, "//input[@name='autocompleteIndustryControl']")
 industryClick.click()
 industryClick.send_keys(Industry)
-time.sleep(1)
+time.sleep(2)
 letsGo = driver.find_element(By.XPATH, "//button[@data-qa='next-button']")
 letsGo.click()
 
@@ -125,9 +124,10 @@ streetAddressClick.send_keys("155 Avenida Cabrillo")
 cityClick = driver.find_element(By.XPATH, "//input[@data-qa='_apollo_PhysicalBusinessAddress-majorMunicipality-city']")
 cityClick.click()
 cityClick.send_keys(city)
-time.sleep(2)
-letsContinue1 = driver.find_element(By.XPATH, "//button[@data-qa='bbnav-navNext-tablet']")
-letsContinue1.click()
+time.sleep(6)
+wait = WebDriverWait(driver, 30)
+letsContinue2 = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[data-qa='bbnav-navNext-tablet']"))).click()
+##letsContinue1.click()
 
 # Here we enter the vin number for the vehicle
 wait = WebDriverWait(driver, 30)
@@ -157,10 +157,11 @@ lastNameClick.send_keys(lastName)
 
 # Here we select the state of the driver's license
 wait = WebDriverWait(driver, 30)
-driverLicenseState = wait.until(EC.element_to_be_clickable((By.XPATH, "//mat-select[@data-qa='_apollo_DriverLicenseState_0']"))).click()
-driverLicenseStateClick = driver.find_element(By.XPATH, "//mat-select[@data-qa='_apollo_DriverLicenseState_0']")
-driverLicenseStateClick.click()
-caLicense = driver.find_element(By.XPATH, "mat-option[@data-qa='_apollo_DriverLicenseState_0-CA']")
+driverLicenseState = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[text()='Select one of the following']"))).click()
+#driverLicenseStateClick = driver.find_element(By.XPATH, "//*[text()='Select one of the following']")
+time.sleep(3)
+#driverLicenseStateClick.click()
+caLicense = driver.find_element(By.XPATH, "//*[text()=' California ']")
 caLicense.click()
 # date of birth
 dobClick = driver.find_element(By.XPATH, "//input[@placeholder='MM/DD/YYYY']")
@@ -169,14 +170,24 @@ dobClick.send_keys(dateOfBirth)
 dViolationQ = driver.find_element(By.XPATH, "//bb-buttonlist-item[@value='false']")
 dViolationQ.click()
 # Enter driver license
-driverLicenseClick = driver.find_element(By.XPATH, "//input[@data-qa='_apollo_DriverLicenseNumber_CA_0']")
+time.sleep(4)
+driverLicenseClick = driver.find_element(By.CSS_SELECTOR, "input[data-qa='_apollo_DriverLicenseNumber_CA_0']")
 driverLicenseClick.send_keys(driverLicense)
-letsContinue3 = driver.find_element(By.XPATH, "//button[@data-qa='bbnav-navNext-tablet']")
+letsContinue3 = driver.find_element(By.XPATH, "//button[@class='width-medium level-item bb-button ng-star-inserted dark-blue']")
 letsContinue3.click()
 
-
-
-
+""" Here the Operations page loads 
+We select 50 miles or less
+"""
+wait = WebDriverWait(driver, 30)
+milesDriven = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[data-qa="_apollo_VehicleRadius-9021-50-button"]'))).click()
+#time.sleep(5)
+#milesDriven = driver.find_element(By.CSS_SELECTOR, 'button[data-qa="_apollo_VehicleRadius-9021-50-button"]')
+#milesDriven.click()
+# Here we are entering the amount of insurance claims the business has filed in the last three years
+claims = driver.find_element(By.CSS_SELECTOR, "input[@data-qa='_apollo_ClaimCount']")
+claims.send_keys("0")
+operationContinue = driver.find_element(By.XPATH, "//button[@class='width-medium level-item bb-button ng-star-inserted dark-blue']")
 
 
 
